@@ -1,20 +1,42 @@
 #apiVersion: extensions/v1beta1
 #apiVersion: v1
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: jenkins-demo
+#  namespace: default#
+#spec:
+#  template:
+#    metadata:
+#      labels:
+#        app: jenkins-demo
+#    spec:
+#      containers:
+#      - image: kay71029/jenkins-demo:<BUILD_TAG>
+#        imagePullPolicy: IfNotPresent
+#        name: jenkins-demo
+#        env:
+#        - name: branch
+#          value: <BRANCH_NAME>
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jenkins-demo
-#  namespace: default
+  name: nginx-deployment
+  labels:
+    app: nginx
 spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
   template:
     metadata:
       labels:
-        app: jenkins-demo
+        app: nginx
     spec:
       containers:
-      - image: kay71029/jenkins-demo:<BUILD_TAG>
-        imagePullPolicy: IfNotPresent
-        name: jenkins-demo
-        env:
-        - name: branch
-          value: <BRANCH_NAME>
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
